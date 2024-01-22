@@ -1,269 +1,221 @@
-> Jonathan : Matthieu, tu vas m'aider à développer le jeu du loup garou de Thercelieux. 
+> J : Matthieu, tu vas m'aider à développer le jeu du loup-garou de Thercelieux. 
 
-> Matthieu : OK, fais moi une synthèse des règles du jeu, puis on ira dans le détail.
+> M : OK, fais moi une synthèse des règles du jeu, puis on ira dans le détail.
 
-> Jonathan : Alors, voilà le principe du jeu. On a un village, composé de villageois et de loups garou. Ces derniers se font passer pour des villageois. Quant aux vrais villageois, certains d'entre eux ont un pouvoir. 
+> J : Alors, voilà le principe du jeu. On a un village, composé de villageois et de loups-garous. 
+> Ces derniers se font passer pour des villageois. Quant aux vrais villageois, certains d'entre eux ont un pouvoir. 
 > 
-> Jonathan : Chaque nuit, les loups garous se réveillent et dévorent un villageois. Au matin, les villageois, y compris les loups garous se réveillent et constatent la victime. Alors, ils désignent un coupable et le condamne. La nuit recommence et le cycle se poursuit jusqu'à ce que l'une des deux équipes gagne : les loups garous ou les villageois.
->
->  M : Je vois, alors, voyons voir ce qu'est un village. Si je comprend bien, un village est composé de villageois, mais aussi de loup garou. Est-ce que les loups garous sont des villageois ? 
+> Chaque nuit, les loups-garous se réveillent et dévorent un villageois. 
+> 
+> Au matin, les villageois, y compris les loups-garous se réveillent et constatent la victime. 
+> Alors, ils désignent un coupable et le condamnent. 
+> 
+> La nuit recommence et le cycle se poursuit jusqu'à ce que l'une des deux équipes gagne : 
+> les loups-garous ou les villageois.
+
+> M : Je vois, alors, essayons de définir ce qu'est un village. 
+> Si je comprend bien, un village est composé de villageois, mais aussi de loups-garous. 
+> Est-ce que les loups-garous sont des villageois ? 
 
 > J : Non, ils se font passer pour des villageois.
 
-> M : Selon le point de vue, ils sont soit villageois, soit loup-garous. Pour éclaircir ça, je te propose de parler d'humains pour les vrais villageois, et de loup-garou pour les faux villageois. 
+> M : Selon le point de vue, ils sont soit villageois, soit loups-garous. 
+> Pour éclaircir ça, je te propose de parler d'humains pour les vrais villageois, 
+> et de loup-garou pour les faux villageois. 
 
-```scala
-object types: 
-	enum Villageois
-		case Humain()
-		case LoupGarou()
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
+```scala 3
+enum Villageois:
+    case Humain
+    case LoupGarou
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])  	
 ```
 
-> M : On constate que le village peut avoir 3 états différents, selon la présence d'humains ou de loups-garous.
-
-> J : Mais comment on sait qui est Humain et qui est Loup Garou ?
+> J : Mais comment on sait qui est Humain et qui est loup-garou ?
 
 > M : Effectivement, on joue à un jeu, mais il nous manque les participants. Et si on les ajoutait ? 
 
-```scala
-object types: 
-	case class Participant(nom: String)
+```scala 3
+case class Participant(nom: String)
 
-	enum Villageois
-		case Humain(participant: Participant)
-		case LoupGarou(participant: Participant)
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
+enum Villageois:
+    case Humain(participant: Participant)
+    case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 ```
 
 > J : Ca devient plus clair, mais j'ai l'impression qu'on n'a pas encore les mécanismes du jeu.
 
 > M : On va introduire la notion de partie et de victoire. 
 
-```scala
-object types: 
-	case class Participant(nom: String)
+```scala 3
+case class Participant(nom: String)
 
-	enum Villageois
-		case Humain(participant: Participant)
-		case LoupGarou(participant: Participant)
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
+enum Villageois:
+    case Humain(participant: Participant)
+    case LoupGarou(participant: Participant)
 
-	enum FinDePartie:  
-	  case VictoireDesLoups  
-	  case VictoireDesHumains
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 
-object jeu:
-	def partie() : FinDePartie = ???
+enum FinDePartie:  
+  case VictoireDesLoups
+  case VictoireDesHumains
+
+def partie() : FinDePartie = ???
 ```
 
 > J : Que signifie le ???
 
-> M : Tout simplement que le code n'est pas implémenté. Mais nous allons y remédier. Décris moi comment se déroule une partie.
+> M : Tout simplement que le code n'est pas implémenté. Mais nous allons y remédier. 
+> Décris moi comment se déroule une partie.
 
 > J : Tout d'abord, on distribue les rôles aux participants, puis on commence avec la nuit.
 
-```scala
-object types: 
-	case class Participant(nom: String)
+```scala 3
+case class Participant(nom: String)
 
-	enum Villageois
-		case Humain(participant: Participant)
-		case LoupGarou(participant: Participant)
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
 
-	enum FinDePartie:  
-	  case VictoireDesLoups  
-	  case VictoireDesHumains
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 
-object syntax:  
-  extension [A](a: A) def |>[B](f: A => B): B = f(a)  
+enum FinDePartie:  
+  case VictoireDesLoups  
+  case VictoireDesHumains
 
-object jeu:
-	def partie() : FinDePartie = 
-		distributionDesRôles(  
-		  Participant("bob"),  
-		  Participant("alice"),  
-		  Participant("sacha"),  
-		  Participant("sarah"),  
-		  Participant("karim")  
-		) |> nuit
+def partie() : FinDePartie = 
+    distributionDesRôles(  
+      Participant("bob"),  
+      Participant("alice"),  
+      Participant("sacha"),  
+      Participant("sarah"),  
+      Participant("karim")  
+    ) |> nuit
 
-	def nuit(village: Village.Menacé) : FinDePartie = ???
-	def distributionDesRôles(participants: Participant*): Village.Menacé = ???
+def nuit(village: Village) : FinDePartie = ???
+def distributionDesRôles(participants: Participant*): Village = ???
 ```
 
-> J : Je comprend, mais que signifie ce symbole ? 
+> J : Je comprends, mais que signifie ce symbole `|>` ? 
 
-> M : C'est un pipe. Cela signifie qu'on enchaîne la fonction nuit avec la sortie de la fonction distributionDesRôles
+> M : C'est un pipe. Cela signifie qu'on prend la valeur qui est avant le pipe et qu'on la passe en paramètre
+> de la fonction nuit avec. C'est un peu comme quand tu fais un pipe en bash `ls | grep .png`
 
-> J : Et pourquoi on utilise le type Village.Menacé ? 
+> J : D'accord, mais alors ton jeu va s'arrêter à la première nuit ? Pourquoi nuit retourne une FinDePartie ?!
 
-> M : Et bien, le jeu ne peut se dérouler qu'en présence d'humains et de loups-garous. S'il n'y a pas les deux, on est soit dans un village tranquille, soit dans un village décimé, et à ce stade, la partie est terminée.
+> M : Nos fonctions doivent retourner des valeurs, du coup, on a deux solutions: soit on retourne `Option[FinDePartie]`
+> et on va répéter l'appel à nuit tant que l'option est vide, soit on retourne toujours une `FinDePartie` et on
+> s'occupe de ne pas sortir de la fonction tant que la partie n'est pas finie.
 
-> J : OK, c'est vrai que je ne me pose pas ces questions quand je joue, mais ça tombe sous le sens. Alors, je vois qu'on a encore des choses non implémentées.
+> J : Ta deuxième solution me semble plus compliquée, non ?
 
-> M : Effectivement, je te propose d'ignorer la distribution des rôles pour le moment, et de nous concentrer sur la nuit. Que se passe-t-il durant cette phase de jeu ?
+> M : J'ai omis un détail. Si tu souhaites appeler en boucle `nuit`, tu vas devoir aussi conserver l'état de ton 
+> `Village`: qui est vivant, qui est mort, etc. Or, on n'a que des fonctions et de paramètres, donc pour conserver
+> un état, il faut que la fonction `nuit` retourne ce nouvel état. On se retrouverait avec
 
-> J : Et bien, les loups-garous se réveillent et décident de tuer quelqu'un. Puis il y a certains pouvoirs qui s'activent la nuit, comme la sorcière. Et après, le jour se lève.
+```scala 3
+def nuit(village: Village): FinDePartie | Village = ???
 
-> M : OK. On va essayer d'ignorer les pouvoirs dans un premier temps et d'avancer sur les phases de jeu, ça donnerait ça.
-
-```scala
-object types: 
-	case class Participant(nom: String)
-
-	enum Villageois
-		case Humain(participant: Participant)
-		case LoupGarou(participant: Participant)
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
-
-	enum FinDePartie:  
-	  case VictoireDesLoups  
-	  case VictoireDesHumains
-
-object jeu:
-	def partie() : FinDePartie = 
-		distributionDesRôles(  
-		  Participant("bob"),  
-		  Participant("alice"),  
-		  Participant("sacha"),  
-		  Participant("sarah"),  
-		  Participant("karim")  
-		) |> nuit
-
-	def nuit(village: Village.Menacé) : FinDePartie = 
-		loupsGarousAttaquent()
-		jour()
-		
-	def distributionDesRôles(participants: Participant*): Village.Menacé = ???
-	def loupsGarousAttaquent() = ???
-	def jour() = FinDePartie = ???
+def partie(): FinDePartie =
+  var village = distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  )
+  var finDePartie = None
+  while (finDePartie == None) do
+    val aprèsLaNuit = nuit(village)
+    aprèsLaNuit match
+      case f: FinDePartie => finDePartie = f 
+      case v: Village => village = v
+  finDePartie
 ```
 
-> M : Et ensuite
+> M : Mais ce code nécessite deux variables mutables et pas mal de complexité. C'est sûrement familier pour beaucoup
+> de développeur, mais après tout, on est là pour explorer d'autres choses, je te propose qu'on continue avec la
+> version fonctionnelle.
 
-> J : Lorsque le jour se lève, on annonce aux joueurs qui a été la victime et on entame la phase de jeu correspondant au jour.
+> J : Bon, aller, de toute façon on se doutait bien que t'allait nous emmener dans des solutions de snob du code.
+> Et on est venu quand même. On enchaine donc sur la fonction `nuit` ?
+
+> M : Effectivement, je te propose d'ignorer la distribution des rôles pour le moment, et de nous concentrer sur la nuit.
+> Que se passe-t-il durant cette phase de jeu ?
+
+> J : Et bien, les loups-garous se réveillent et décident de tuer quelqu'un. Puis il y a certains pouvoirs qui
+> s'activent la nuit, comme la sorcière. Et après, le jour se lève.
+
+> M : OK. On va essayer d'ignorer les pouvoirs dans un premier temps et d'avancer sur les phases de jeu. Il se passe
+> quoi lorsque le jour se lève ?
+
+> J : Lorsque le jour se lève, on annonce aux joueurs qui est mort et on entame la phase de jeu correspondant au jour.
 
 > M : OK, on verra le jour après. Tu as parlé de victime, cela se produit lors de l'attaque des loups-garous ?
 
-> J : Oui, c'est ça. Les loups garous choisissent un participant. Il est tué. Lorsque le jour se lève, on annonce à ce participant qu'il est éliminé.
+> J : Oui, c'est ça. Les loups-garous choisissent un participant. Il est tué. Lorsque le jour se lève, on annonce 
+> à ce participant qu'il est éliminé.
 
-> M : Alors, ça pourrait donner ça.
+> M : que penses-tu de ça ? 
 
-```scala
-object types: 
-	case class Participant(nom: String)
+```scala 3
+case class Participant(nom: String)
 
-	enum Villageois
-		case Humain(participant: Participant)
-		case LoupGarou(participant: Participant)
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
 
-	enum FinDePartie:  
-	  case VictoireDesLoups  
-	  case VictoireDesHumains
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 
-	case class Victime(humain: Humain)
+enum FinDePartie:
+  case VictoireDesLoups
+  case VictoireDesHumains
 
-object syntax:  
-  extension [A](a: A) def |>[B](f: A => B): B = f(a)  
-  
-  def tireAuHasard[T](choses: Set[T]): T =  
-    Random.shuffle(choses).head
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
 
-object jeu:
-	def partie() : FinDePartie = 
-		distributionDesRôles(  
-		  Participant("bob"),  
-		  Participant("alice"),  
-		  Participant("sacha"),  
-		  Participant("sarah"),  
-		  Participant("karim")  
-		) |> nuit
+def nuit(village: Village) : FinDePartie = ???
+def distributionDesRôles(participants: Participant*): Village = ???
 
-	def nuit(village: Village.Menacé) : FinDePartie = 
-		val victime = loupsGarousAttaquent(village)
-		jour()
-		
-	def distributionDesRôles(participants: Participant*): Village.Menacé = ???
-	def loupsGarousAttaquent(village: Village.Menacé): Victime =  
-		Victime(tireAuHasard(village.humains))
-	def jour() = FinDePartie = ???
+
+def nuit(village: Village) : FinDePartie = 
+    village
+    |> loupsGarousAttaquent
+    |> jour
+    
+def distributionDesRôles(participants: Participant*): Village = ???
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village) = FinDePartie = ???
 ```
 
-> M : Et on continue avec le jour qui se lève : 
+> J : Pourquoi tu passes un `Village` et renvoies un `Village` pour `loupsGarousAttaquent` ?
 
-```scala
-object types: 
-	case class Participant(nom: String)
+> M : Si j'ai bien compris, on doit tuer un humain, n'est-ce pas ?
 
-	enum Villageois
-		case Humain(participant: Participant)
-		case LoupGarou(participant: Participant)
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
+> J : Oui, en effet.
 
-	enum FinDePartie:  
-	  case VictoireDesLoups  
-	  case VictoireDesHumains
+> M : Du coup, tuer un humain ça revient à avoir le même village avec un humain de moins dans la liste, non ?
 
-	case class Victime(humain: Humain)
+> J : Oui. Mais tu peux bien le retirer du Village qu'on te passe, non ?
 
-object syntax:  
-  extension [A](a: A) def |>[B](f: A => B): B = f(a)  
-  
-  def tireAuHasard[T](choses: Set[T]): T =  
-    Random.shuffle(choses).head
+> M : Ah, je vois. J'ai oublié de te dire que toutes mes valeurs sont immuables. Tu ne peux pas modifier une valeur.
+> Pour cela, tu dois la copier en modifiant la valeur que tu souhaites.
 
-object jeu:
-	def partie() : FinDePartie = 
-		distributionDesRôles(  
-		  Participant("bob"),  
-		  Participant("alice"),  
-		  Participant("sacha"),  
-		  Participant("sarah"),  
-		  Participant("karim")  
-		) |> nuit
+> J : Mais c'est horrible !
 
-	def nuit(village: Village.Menacé) : FinDePartie = 
-		val victime = loupsGarousAttaquent(village)
-		val villageAuMatin = leJourSeLève(village, victime)
-		jour()
-		
-	def distributionDesRôles(participants: Participant*): Village.Menacé = ???
-	def loupsGarousAttaquent(village: Village.Menacé): Victime =  
-		Victime(tireAuHasard(village.humains))
-	def jour() = FinDePartie = ???
-	def leJourSeLève(village: Village.Menacé, victime: Victime) : Village = ???
-```
+> M : Au contraire. Tu sais que le paramètre que tu passes à une fonction ne peut jamais changer dans la fonction.
+> Tu n'as pas besoin d'aller voir le code pour savoir ce qui s'y passe. Et la signature de la fonction te
+> décrit parfaitement les entrées et les sorties. Le code devient beaucoup plus simple à lire.
+
+> J : Je ne suis pas encore convaincu. Mais continuons.
 
 > M : Si j'ai bien compris, les loups-garous gagnent la partie lorsque tous les humains sont éliminés ?
 
@@ -273,61 +225,65 @@ object jeu:
 
 > J : Tout à fait
 
-```scala
-object types: 
-	case class Participant(nom: String)
+> M : Je vais ajouter le levé du jour
 
-	enum Villageois
-		case Humain(participant: Participant)
-		case LoupGarou(participant: Participant)
-		
-	enum Village
-		case Menacé(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
-		case Décimé(loupGarou: Set[LoupGarou])  
-		case Tranquille(humains: Set[Humain])
+```scala 3
+case class Participant(nom: String)
 
-	enum FinDePartie:  
-	  case VictoireDesLoups  
-	  case VictoireDesHumains
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
 
-	case class Victime(humain: Humain)
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 
-object syntax:  
-  extension [A](a: A) def |>[B](f: A => B): B = f(a)  
-  
-  def tireAuHasard[T](choses: Set[T]): T =  
-    Random.shuffle(choses).head
+enum FinDePartie:
+  case VictoireDesLoups
+  case VictoireDesHumains
 
-object jeu:
-	def partie() : FinDePartie = 
-		distributionDesRôles(  
-		  Participant("bob"),  
-		  Participant("alice"),  
-		  Participant("sacha"),  
-		  Participant("sarah"),  
-		  Participant("karim")  
-		) |> nuit
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
 
-	def nuit(village: Village.Menacé) : FinDePartie = 
-		val victime = loupsGarousAttaquent(village)
-		val villageAuMatin = leJourSeLève(village, victime)
-		laPartieEstFinie(villageAuMatin) ou jour
-		
-	def distributionDesRôles(participants: Participant*): Village.Menacé = ???
-	def loupsGarousAttaquent(village: Village.Menacé): Victime =  
-		Victime(tireAuHasard(village.humains))
-	def jour() = FinDePartie = ???
-	def leJourSeLève(village: Village.Menacé, victime: Victime) : Village = ???
+def nuit(village: Village) : FinDePartie = ???
+def distributionDesRôles(participants: Participant*): Village = ???
 
-	def laPartieEstFinie(village: Village): Either[Village.Menacé, FinDePartie] =  
-	  village match  
-	    case v: Village.Menacé     => Left(v)  
-	    case _: Village.Décimé     => Right(VictoireDesLoups)  
-	    case _: Village.Tranquille => Right(VictoireDesHumains)
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
 
-	extension (either: Either[Village.Menacé, FinDePartie])  
-	  def ou(f: Village.Menacé => FinDePartie): FinDePartie =  
-	    either match  
-	      case Left(village)      => f(village)  
-	      case Right(finDePartie) => finDePartie	
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case Village(humains: Set.empty, _) => FinDePartie.VictoireDesLoups
+    case _ => village
+
+extension (either: Village | FinDePartie)
+  def ou(f: Village => FinDePartie): FinDePartie =
+    either match
+      case f: FinDePartie => fdp
+      case v: Village     => f(v)
+
+def distributionDesRôles(participants: Participant*): Village = ???
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village) = FinDePartie = ???
 ```
+
+> J : C'est quoi ce `ou` que tu nous as mis ?
+
+> M : J'ai créé une "extension method" pour rendre le code plus facile à lire. Dans ce cas, étant donné une valeur
+> qui serait soit un Village soit une FinDePart, si c'est une fin de partie, je renvoie la valeur, mais si c'est
+> un Village, j'appelle la fonction passée en paramètre en lui passant le village.
+
+> J : C'est ça le `|` ? C'est pour dire soit un type soit un autre ?
+
+> M : Oui, c'est une disjonction ou aussi appelé type union. Ça permet de symboliser des branches de code.
+> Ici, c'est `laPartieEstFinie` qui décide comme le code branche en fonction de s'il reste des humains dans le village
+> ou non.
