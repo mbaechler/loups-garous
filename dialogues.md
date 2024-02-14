@@ -225,7 +225,7 @@ def jour(village: Village) = FinDePartie = ???
 
 > J : Tout à fait
 
-> M : Je vais ajouter le levé du jour
+> M : Je vais ajouter le lever du jour
 
 ```scala 3
 case class Participant(nom: String)
@@ -287,3 +287,7 @@ def jour(village: Village) = FinDePartie = ???
 > M : Oui, c'est une disjonction ou aussi appelé type union. Ça permet de symboliser des branches de code.
 > Ici, c'est `laPartieEstFinie` qui décide comme le code branche en fonction de s'il reste des humains dans le village
 > ou non.
+
+// TODO : Dans le code au-dessus, tu as deux fois la fonction nuit et deux fois la fonction distributionDesRôles
+
+> J : OK. On a le lever du jour, mais je te propose de continuer sur l'attaque des loups-garous. Lorsqu'ils attaquent, les loups-garous doivent désigner une victime et ils la mettent à mort.
