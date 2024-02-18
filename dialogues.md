@@ -291,3 +291,26 @@ def jour(village: Village) = FinDePartie = ???
 // TODO : Dans le code au-dessus, tu as deux fois la fonction nuit et deux fois la fonction distributionDesRôles
 
 > J : OK. On a le lever du jour, mais je te propose de continuer sur l'attaque des loups-garous. Lorsqu'ils attaquent, les loups-garous doivent désigner une victime et ils la mettent à mort.
+
+
+> M : Si je te suis, après l'attaque, on a donc un Humain de moins dans le Village ? Essayons ça :
+
+```scala3
+
+def loupsGarousAttaquent(village: Village): Village = 
+  val victime: Humain = ???
+  Village.copy(humains = humains - victime)
+```
+
+> M : à ce stade, je pense qu'il faudrait matérialiser les interactions avec les joueurs, ici le choix de la victime requiert une interaction.
+
+```scala3
+
+trait Interaction:
+  def choixVictime(loupsGarous: Set[LoupGarou]): Humain = ???
+
+def loupsGarousAttaquent(village: Village): Village = 
+  val victime: Humain = choixVictime(village.lousGarous)
+  Village.copy(humains = humains - victime)
+
+```
