@@ -315,6 +315,9 @@ def loupsGarousAttaquent(village: Village): Village =
 
 ```
 
-> M : Comment est-ce qu'on détermine la victime des loups-garous ?
+> M : Laissons l'implémentation de ce trait pour plus tard, la signature des méthodes suffit. 
 
-> J : Dans un premier temps, je te propose de faire ça aléatoirement. On va prendre les villageois encore vivants, et on va en sélectionner un au hasard.
+> J : Pourquoi on implémenterait les autres méthodes mais pas celles-ci ?
+
+> M : Elles ne changent rien à la modélisation, elles sont plutôt liées à l'IHM, ce n'est pas notre préoccupation ici
+
