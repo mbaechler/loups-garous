@@ -314,3 +314,7 @@ def loupsGarousAttaquent(village: Village): Village =
   Village.copy(humains = humains - victime)
 
 ```
+
+> M : Comment est-ce qu'on détermine la victime des loups-garous ?
+
+> J : Dans un premier temps, je te propose de faire ça aléatoirement. On va prendre les villageois encore vivants, et on va en sélectionner un au hasard.
