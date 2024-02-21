@@ -321,12 +321,11 @@ def loupsGarousAttaquent(village: Village): Village =
 
 > M : Elles ne changent rien à la modélisation, elles sont plutôt liées à l'IHM, ce n'est pas notre préoccupation ici
 
-> J : OK. Alors, les loups-garous peuvent agir la nuit. C'est maintenant au tour des
-> villageois d'agir durant la journée, s'il en reste. Une journée se décompose en 
-> plusieurs phases. On commence par annoncer aux joueurs qui est mort durant la nuit. 
+> J : OK. Alors, les loups-garous peuvent agir la nuit. On vérifie s'il reste des humains, puis c'est le jour.
+> Durant cette phase, ce sont les villageois qui agissent, donc les humains et les loups-garous qui se font passer pour des villageois.
+> Une journée se décompose en plusieurs phases.
+> On commence par annoncer aux joueurs qui est mort durant la nuit. 
 > Ensuite, on élit un maire s'il n'y en a pas. Puis les joueurs votent pour éliminer
-> une personne. Et enfin, on vérifie si la partie est terminée. 
+> une personne. Et enfin, on vérifie si la partie est terminée.
 > Si ce n'est pas le cas, la nuit tombe.
 
-> M : La partie se termine quand il n'y a plus de villageois j'imagine ? Mais les
-> loups-garous ne sont-ils pas des villageois ? Ne veux-tu pas dire "s'il reste des humains" ?
