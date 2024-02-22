@@ -295,7 +295,7 @@ def jour(village: Village) = FinDePartie = ???
 
 > M : Si je te suis, après l'attaque, on a donc un Humain de moins dans le Village ? Essayons ça :
 
-```scala3
+```scala 3
 
 def loupsGarousAttaquent(village: Village): Village = 
   val victime: Humain = ???
@@ -304,7 +304,7 @@ def loupsGarousAttaquent(village: Village): Village =
 
 > M : à ce stade, je pense qu'il faudrait matérialiser les interactions avec les joueurs, ici le choix de la victime requiert une interaction.
 
-```scala3
+```scala 3
 
 trait Interaction:
   def choixVictime(loupsGarous: Set[LoupGarou]): Humain = ???
@@ -312,7 +312,6 @@ trait Interaction:
 def loupsGarousAttaquent(village: Village): Village = 
   val victime: Humain = choixVictime(village.lousGarous)
   Village.copy(humains = humains - victime)
-
 ```
 
 > M : Laissons l'implémentation de ce trait pour plus tard, la signature des méthodes suffit. 
@@ -329,3 +328,65 @@ def loupsGarousAttaquent(village: Village): Village =
 > une personne. Et enfin, on vérifie si la partie est terminée.
 > Si ce n'est pas le cas, la nuit tombe.
 
+```scala 3
+case class Victime(humain: Humain)
+
+case class Maire(villageois: Villageois)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou], maire: Option[Villageois])
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(loupsGarous: Set[LoupGarou]): Humain = ???
+
+  def lesVillageoisChoisissentUneVictime(village: Village): Villageois = ???
+
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+
+  def electionMaire(village: Village): Villageois = ???
+
+def loupsGarousAttaquent(village: Village)(interaction: Interaction): (Victime, Village) =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village.loupsGarous)
+  val villageAprèsLAttaque = village.retirerVillageois(victime)
+  (victime, villageAprèsLAttaque)
+
+def nuit(village: Village): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève(interaction)
+
+val leJourSeLève(interaction: Interaction): (Victime, Village) => FinDePartie =
+  (victime, village) => laPartieEstFinie(village) ou jour(victime, village)
+
+def jour(victimeNocturne: Victime, village: Village)(interaction: Interaction) = FinDePartie =
+  interaction.annoncerLaMortDeLaVictime(victimeNocturne)
+  val villageAvecUnMaire = village.maire.getOrElse(electionMaire(village)) |> village.copy(maire = maire)
+  val villageÀLaFinDeLaJournée = interaction.lesVillageoisChoisissentUneVictime(villageAvecUnMaire) |> village.retirerVillageois
+  laPartieEstFinie(village) ou nuit
+
+extension (village: Village)
+  def retirerVillageois(village: Village, villageois: Villageois): Village =
+    import village.*
+    (villageois match
+      case humain: Humain => village.copy(humains = humains - humain)
+      case loupGarou: LoupGarou => village.copy(loupsGarous = loupsGarous - loupGarou))
+
+      .copy(maire = maire.filter(_ != victime))
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case Village(humains: Set.empty, _) => FinDePartie.VictoireDesLoups
+    case Village(_, loupsGarous: Set.empty) => FinDePartie.VictoireDesHumains
+    case _ => village
+
+```
+
+> M : Alors, j'ai besoin de définir pas mal de choses. Comme je dois annoncer à la victime des loups-garous qu'il est mort,
+> j'ai changé `loupsGarousAttaquent` pour que cette fonction retourne la `Victime` en plus du `Village`.
+> Ensuite, j'ai ajouté une interaction avec les utilisateurs pour annoncer qui est mort pendant la nuit.
+> J'ai ensuite déduit que parfois, le Maire meurt durant la nuit et qu'il faut choisir un nouveau Maire
+> dans ce cas précis.
+> J'ai aussi ajouté une interaction pour choisir une victime pendant la journée et pour éviter de dupliquer la logique
+> de suppression du Maire, j'ai mis en commun la fonction qui permet de retirer un Villageois du Village.
+> Enfin, j'ai modifié la règle de fin de partie pour que les humains gagnent s'il n'y a plus de loup-garou à la fin
+> d'une journée. J'ai tout compris ?
