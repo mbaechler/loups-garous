@@ -328,4 +328,18 @@ def loupsGarousAttaquent(village: Village): Village =
 > une personne. Et enfin, on vérifie si la partie est terminée.
 > Si ce n'est pas le cas, la nuit tombe.
 
-> M : Oulà, tu me demandes beaucoup de choses. Je te propose qu'on découpe et qu'on y aille étape par étape. Dans un premier temps, on va simplement passer au jour, puis de nouveau à la nuit. On intégrera le reste au fur et à mesure.
+> M : Oulà, tu me demandes beaucoup de choses. Je te propose qu'on découpe et qu'on y aille étape par étape.
+> Dans un premier temps, on va simplement passer au jour, puis de nouveau à la nuit. 
+> On intégrera le reste au fur et à mesure.
+ 
+```scala 3
+def déroulementDuJour(village: Village): Village = ???
+
+def jour(village: Village): FinDePartie =
+  village
+  |> déroulementDuJour
+  |> laPartieEstFinie ou nuit
+```
+
+> M : Est-ce que ça te semble être un bon cadre avant de rentrer dans les détails ?
+> 
