@@ -217,3 +217,4 @@ object Main extends ZIOAppDefault:
 
   override def run: ZIO[Environment & ZIOAppArgs & Scope, Any, Any] =
     ZIO.succeed(jeu.partie())
+

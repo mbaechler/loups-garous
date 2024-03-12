@@ -377,3 +377,78 @@ def jour(victime: Victime)(village: Village): FinDePartie =
 
 > J: OK.
 > 
+> J: Maintenant, on va pouvoir élire le maire. 
+
+```scala 3
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(loupsGarous: Set[LoupGarou]): Humain = ???
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+  def electionMaire(village: Village): Villageois = ???
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou], maire: Option[Villageois] = None)
+
+def déroulementDuJour(village: Village)(interaction: Interaction): Village =
+  val maire = interaction.electionMaire(village)
+  village.copy(maire = Some(maire))
+```
+
+> M: Comme tu vois, comme on commençait à avoir pas mal de fonctions qui correspondent à des interactions avec les joueurs,
+> j'ai créé une interface (`trait` en scala) pour regrouper ces fonctions.
+> Si on allait au bout du développement, avec une interface homme-machine, il faudrait implémenter des interactions
+> avec les utilisateurs du jeu pour chaque fonction de cette interface.
+ 
+> J: Super, comme ça, je pourrai sortir mon jeu en version web et en version mobile.
+
+> J: Par contre, je me rends compte qu'on élit le maire tous les jours. Lorsqu'il y a déjà un maire, il ne faut pas en élire un nouveau.
+
+```scala 3
+def déroulementDuJour(village: Village)(interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  village.copy(maire = maire)
+```
+> M: j'ai changé le code pour ne faire l'élection que lorsque la propriété `maire` du Village est vide.
+> (et oui, on copie le village même quand ça ne sert à rien)
+
+> J: Bien, maintenant, on va partir à la chasse aux loups-garous, les villageois doivent voter pour désigner leur prochaine victime. Tout le monde vote, y compris les loups-garous.
+
+```scala 3
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(loupsGarous: Set[LoupGarou]): Humain = ???
+  def lesVillageoisChoisissentUneVictime(village: Village): Villageois = ???
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+  def electionMaire(village: Village): Villageois = ???
+  
+def déroulementDuJour(village: Village)(interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  val villageAvecUnMaire = village.copy(maire = maire)
+  val victime = interaction.lesVillageoisChoisissentUneVictime(villageAvecUnMaire)
+  villageAvecUnMaire.retirerVillageois(victime)
+
+extension (village: Village)
+  def retirerVillageois(villageois: Villageois): Village =
+    import village.*
+    (villageois match
+      case humain: Humain => village.copy(humains = humains - humain)
+      case loupGarou: LoupGarou => village.copy(loupsGarous = loupsGarous - loupGarou)
+    ).copy(maire = maire.filter(_ != villageois))
+
+```
+
+> J: Maintenant qu'on a désigné la victime, il faut vérifier si la partie est terminée. 
+> On a peut-être tué le dernier humain ou le dernier loup-garou.
+ 
+ 
+```scala 3
+def jour(victime: Victime)(village: Village): FinDePartie =
+  annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+    case v: Village if v.loupsGarous.isEmpty => FinDePartie.VictoireDesHumains
+    case _ => village
+
+```
