@@ -44,5 +44,10 @@ extension (either: Village | FinDePartie)
       case v: Village     => f(v)
 
 def distributionDesRôles(participants: Participant*): Village = ???
-def loupsGarousAttaquent(village: Village): Village = ???
+
+def loupsGarousAttaquent(village: Village): Village =
+  import village.humains
+  val victime: Humain = ???
+  village.copy(humains = humains - victime)
+
 def jour(village: Village): FinDePartie = ???

@@ -290,9 +290,10 @@ def jour(village: Village): FinDePartie = ???
 
 ```scala 3
 
-def loupsGarousAttaquent(village: Village): Village = 
+def loupsGarousAttaquent(village: Village): Village =
+  import village.*
   val victime: Humain = ???
-  Village.copy(humains = humains - victime)
+  village.copy(humains = humains - victime)
 ```
 
 > M : à ce stade, je pense qu'il faudrait matérialiser les interactions avec les joueurs, ici le choix de la victime requiert une interaction.
