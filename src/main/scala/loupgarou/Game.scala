@@ -47,6 +47,7 @@ def distributionDesRôles(participants: Participant*): Village = ???
 
 trait Interaction:
   def lesLoupsGarousChoisissentUneVictime(loupsGarous: Set[LoupGarou]): Humain = ???
+  def lesVillageoisChoisissentUneVictime(village: Village): Villageois = ???
   def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
   def electionMaire(village: Village): Villageois = ???
 
@@ -60,7 +61,18 @@ def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Vil
 
 def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
   val maire = village.maire.getOrElse(interaction.electionMaire(village))
-  village.copy(maire = Some(maire))
+  val villageAvecUnMaire = village.copy(maire = Some(maire))
+  val victime = interaction.lesVillageoisChoisissentUneVictime(villageAvecUnMaire)
+  villageAvecUnMaire.retirerVillageois(victime)
+
+extension (village: Village)
+  def retirerVillageois(villageois: Villageois): Village =
+    import village.*
+    (villageois match
+      case humain: Humain => village.copy(humains = humains - humain)
+      case loupGarou: LoupGarou => village.copy(loupsGarous = loupsGarous - loupGarou)
+      ).copy(maire = maire.filter(_ != villageois))
+
 
 def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
   interaction.annoncerLaMortDeLaVictime(victime)
