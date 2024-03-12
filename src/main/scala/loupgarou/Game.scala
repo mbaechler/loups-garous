@@ -10,3 +10,9 @@ enum Villageois:
   case LoupGarou(participant: Participant)
 
 case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+enum FinDePartie:
+  case VictoireDesLoups
+  case VictoireDesHumains
+
+def partie() : FinDePartie = ???
