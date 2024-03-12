@@ -15,4 +15,14 @@ enum FinDePartie:
   case VictoireDesLoups
   case VictoireDesHumains
 
-def partie() : FinDePartie = ???
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+
+def nuit(village: Village) : FinDePartie = ???
+def distributionDesRôles(participants: Participant*): Village = ???
