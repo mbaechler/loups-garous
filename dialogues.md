@@ -182,18 +182,14 @@ def partie() : FinDePartie =
     Participant("karim")
   ) |> nuit
 
-def nuit(village: Village) : FinDePartie = ???
-def distributionDesRôles(participants: Participant*): Village = ???
-
-
-def nuit(village: Village) : FinDePartie = 
-    village
+def nuit(village: Village) : FinDePartie =
+  village
     |> loupsGarousAttaquent
     |> jour
-    
+
 def distributionDesRôles(participants: Participant*): Village = ???
 def loupsGarousAttaquent(village: Village): Village = ???
-def jour(village: Village) = FinDePartie = ???
+def jour(village: Village): FinDePartie = ???
 ```
 
 > J : Pourquoi tu passes un `Village` et renvoies un `Village` pour `loupsGarousAttaquent` ?
