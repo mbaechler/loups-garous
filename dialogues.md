@@ -237,7 +237,7 @@ enum Villageois:
 case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 
 enum FinDePartie:
-  case VictoireDesLoups
+  case VictoireDesLoupsGarous
   case VictoireDesHumains
 
 def partie() : FinDePartie =
@@ -262,7 +262,7 @@ def leJourSeLève(village: Village) : FinDePartie =
 
 def laPartieEstFinie(village: Village): Village | FinDePartie =
   village match
-    case Village(humains: Set.empty, _) => FinDePartie.VictoireDesLoups
+    case Village(humains: Set.empty, _) => FinDePartie.VictoireDesLoupsGarous
     case _ => village
 
 extension (either: Village | FinDePartie)
@@ -342,4 +342,44 @@ def jour(village: Village): FinDePartie =
 ```
 
 > M : Est-ce que ça te semble être un bon cadre avant de rentrer dans les détails ?
+
+> J : Oui, ça me semble un bon point de départ. Je te propose d'annoncer aux joueurs qui est mort durant la nuit. 
+
+> M : Pour faire ça, il faudrait qu'on passe l'information de la phase nuit à la phase jour.
+
+```scala 3
+
+case class Victime(humain: Humain)
+
+def loupsGarousAttaquent(village: Village): (Village, Victime) = 
+  val victime: Humain = choixVictime(village.lousGarous)
+  val villageÀJour = Village.copy(humains = humains - victime)
+  (villageÀJour, Victime(victime))
+
+
+def nuit(village: Village, victime: Victime) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève.tupled
+
+def leJourSeLève(village: Village, victime: Victime) : FinDePartie =
+  laPartieEstFinie(village) ou jour(victime)
+
+def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+
+def jour(victime: Victime)(village: Village): FinDePartie =
+  annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+```
+
+> J: La syntaxe de la fonction jour est étrange. On dirait qu'il y a deux fois des paramètres. Tu peux m'expliquer ?
+
+> M: On avait défini la fonction `ou` comme prenant une fonction qui va de `Village` vers `FinDePartie`. 
+> Sauf que maintenant, on doit passer deux paramètres à jour, on doit passer la victime et le village.
+> Du coup, pour changer le minimum de choses, je peux dire que ma fonction prend deux ensembles de paramètres.
+> Ainsi, une fois que j'ai passé victime, j'ai bien une fonction qui prend un `Village`.
+
+> J: OK.
 > 
