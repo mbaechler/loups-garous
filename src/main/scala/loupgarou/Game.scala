@@ -3,8 +3,10 @@ package loupgarou
 import Villageois.LoupGarou
 import Villageois.Humain
 
+case class Participant(nom: String)
+
 enum Villageois:
-  case Humain()
-  case LoupGarou()
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
 
 case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
