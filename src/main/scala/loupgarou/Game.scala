@@ -15,14 +15,22 @@ enum FinDePartie:
   case VictoireDesLoups
   case VictoireDesHumains
 
-def partie() : FinDePartie =
-  distributionDesRôles(
+
+def partie(): FinDePartie =
+  var village = distributionDesRôles(
     Participant("bob"),
     Participant("alice"),
     Participant("sacha"),
     Participant("sarah"),
     Participant("karim")
-  ) |> nuit
+  )
+  var finDePartie: Option[FinDePartie] = None
+  while (finDePartie == None) do
+    val aprèsLaNuit = nuit(village)
+    aprèsLaNuit match
+      case f: FinDePartie => finDePartie = Some(f)
+      case v: Village => village = v
+  finDePartie.get
 
-def nuit(village: Village) : FinDePartie = ???
+def nuit(village: Village): FinDePartie | Village = ???
 def distributionDesRôles(participants: Participant*): Village = ???
