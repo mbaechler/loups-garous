@@ -245,9 +245,6 @@ def partie() : FinDePartie =
     Participant("karim")
   ) |> nuit
 
-def nuit(village: Village) : FinDePartie = ???
-def distributionDesRôles(participants: Participant*): Village = ???
-
 def nuit(village: Village) : FinDePartie =
   village
     |> loupsGarousAttaquent
@@ -258,18 +255,18 @@ def leJourSeLève(village: Village) : FinDePartie =
 
 def laPartieEstFinie(village: Village): Village | FinDePartie =
   village match
-    case Village(humains: Set.empty, _) => FinDePartie.VictoireDesLoupsGarous
+    case v: Village if v.humains.isEmpty  => FinDePartie.VictoireDesLoupsGarous
     case _ => village
 
 extension (either: Village | FinDePartie)
   def ou(f: Village => FinDePartie): FinDePartie =
     either match
-      case f: FinDePartie => fdp
+      case fdp: FinDePartie => fdp
       case v: Village     => f(v)
 
 def distributionDesRôles(participants: Participant*): Village = ???
 def loupsGarousAttaquent(village: Village): Village = ???
-def jour(village: Village) = FinDePartie = ???
+def jour(village: Village): FinDePartie = ???
 ```
 
 > J : C'est quoi ce `ou` que tu nous as mis ?
