@@ -354,7 +354,7 @@ def loupsGarousAttaquent(village: Village): (Village, Victime) =
 def nuit(village: Villagee) : FinDePartie =
   village
     |> loupsGarousAttaquent
-    |> leJourSeLève.tupled
+    |> leJourSeLève
 
 def leJourSeLève(village: Village, victime: Victime) : FinDePartie =
   laPartieEstFinie(village) ou jour(victime)
