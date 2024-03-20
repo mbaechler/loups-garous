@@ -10,7 +10,8 @@ enum Villageois:
   case Humain(participant: Participant)
   case LoupGarou(participant: Participant)
 
-case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
 
 enum FinDePartie:
   case VictoireDesLoupsGarous
@@ -45,5 +46,9 @@ extension (either: Village | FinDePartie)
       case v: Village     => f(v)
 
 def distributionDesRôles(participants: Participant*): Village = ???
-def loupsGarousAttaquent(village: Village): Village = ???
+
+def loupsGarousAttaquent(village: Village): Village =
+  val victime: Humain = ???
+  village.retirerVillageois(victime)
+
 def jour(village: Village): FinDePartie = ???
