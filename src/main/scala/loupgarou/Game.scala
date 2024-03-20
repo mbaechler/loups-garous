@@ -31,7 +31,7 @@ def nuit(village: Village)(using interaction: Interaction) : FinDePartie =
     |> loupsGarousAttaquent
     |> leJourSeLève
 
-def leJourSeLève(village: Village) : FinDePartie =
+def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
   laPartieEstFinie(village) ou jour
 
 def laPartieEstFinie(village: Village): Village | FinDePartie =
@@ -55,4 +55,9 @@ def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Vill
   val victime: Humain = interaction.choixVictime(village)
   village.retirerVillageois(victime)
 
-def jour(village: Village): FinDePartie = ???
+def déroulementDuJour(village: Village): Village = ???
+
+def jour(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
