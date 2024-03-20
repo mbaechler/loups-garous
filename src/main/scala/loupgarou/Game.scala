@@ -17,8 +17,8 @@ enum FinDePartie:
   case VictoireDesLoupsGarous
   case VictoireDesHumains
 
-def partie() : FinDePartie =
-  distributionDesRôles(
+def partie()(using interaction: Interaction) : FinDePartie =
+  interaction.distributionDesRôles(
     Participant("bob"),
     Participant("alice"),
     Participant("sacha"),
@@ -26,7 +26,7 @@ def partie() : FinDePartie =
     Participant("karim")
   ) |> nuit
 
-def nuit(village: Village) : FinDePartie =
+def nuit(village: Village)(using interaction: Interaction) : FinDePartie =
   village
     |> loupsGarousAttaquent
     |> leJourSeLève
@@ -45,10 +45,14 @@ extension (either: Village | FinDePartie)
       case fdp: FinDePartie => fdp
       case v: Village     => f(v)
 
-def distributionDesRôles(participants: Participant*): Village = ???
 
-def loupsGarousAttaquent(village: Village): Village =
-  val victime: Humain = ???
+trait Interaction:
+  def choixVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.choixVictime(village)
   village.retirerVillageois(victime)
 
 def jour(village: Village): FinDePartie = ???
