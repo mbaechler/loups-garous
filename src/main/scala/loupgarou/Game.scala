@@ -26,13 +26,13 @@ def partie()(using interaction: Interaction) : FinDePartie =
     Participant("karim")
   ) |> nuit
 
-def nuit(village: Village)(using interaction: Interaction) : FinDePartie =
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
   village
     |> loupsGarousAttaquent
     |> leJourSeLève
 
-def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
-  laPartieEstFinie(village) ou jour
+def leJourSeLève(village: Village, victime: Victime)(using interaction: Interaction): FinDePartie =
+  laPartieEstFinie(village) ou jour(victime)
 
 def laPartieEstFinie(village: Village): Village | FinDePartie =
   village match
@@ -50,14 +50,21 @@ trait Interaction:
   def choixVictime(village: Village): Humain
   def distributionDesRôles(participants: Participant*): Village
 
-def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+
+case class Victime(humain: Humain)
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Village, Victime) =
   import village.*
   val victime: Humain = interaction.choixVictime(village)
-  village.retirerVillageois(victime)
+  val villageÀJour = village.retirerVillageois(victime)
+  (villageÀJour, Victime(victime))
 
 def déroulementDuJour(village: Village): Village = ???
 
-def jour(village: Village)(using interaction: Interaction): FinDePartie =
+def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+
+def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
+  annoncerLaMortDeLaVictime(victime)
   village
     |> déroulementDuJour
     |> laPartieEstFinie ou nuit
