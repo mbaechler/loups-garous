@@ -49,6 +49,7 @@ extension (either: Village | FinDePartie)
 
 trait Interaction:
   def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def lesVillageoisChoisissentUneVictime(village: Village): Villageois
   def distributionDesRôles(participants: Participant*): Village
   def annoncerLaMortDeLaVictime(victime: Victime): Unit
   def electionMaire(village: Village): Villageois
@@ -63,7 +64,10 @@ def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Vil
 
 def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
   val maire = village.maire.getOrElse(interaction.electionMaire(village))
-  village.setMaire(maire)
+  val villageAvecUnMaire = village.setMaire(maire)
+  val victime = interaction.lesVillageoisChoisissentUneVictime(villageAvecUnMaire)
+  villageAvecUnMaire.retirerVillageois(victime)
+
 
 def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
   interaction.annoncerLaMortDeLaVictime(victime)
