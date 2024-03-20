@@ -37,7 +37,8 @@ def leJourSeLève(village: Village, victime: Victime)(using interaction: Interac
 
 def laPartieEstFinie(village: Village): Village | FinDePartie =
   village match
-    case v: Village if v.humains.isEmpty  => FinDePartie.VictoireDesLoupsGarous
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+    case v: Village if v.loupsGarous.isEmpty => FinDePartie.VictoireDesHumains
     case _ => village
 
 extension (either: Village | FinDePartie)
