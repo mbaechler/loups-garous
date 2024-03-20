@@ -62,7 +62,7 @@ def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Vil
   (villageÀJour, Victime(victime))
 
 def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
-  val maire = interaction.electionMaire(village)
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
   village.setMaire(maire)
 
 def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
