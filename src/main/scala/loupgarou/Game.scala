@@ -13,7 +13,7 @@ enum Villageois:
 case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 
 enum FinDePartie:
-  case VictoireDesLoups
+  case VictoireDesLoupsGarous
   case VictoireDesHumains
 
 def partie() : FinDePartie =
@@ -28,7 +28,21 @@ def partie() : FinDePartie =
 def nuit(village: Village) : FinDePartie =
   village
     |> loupsGarousAttaquent
-    |> jour
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty  => FinDePartie.VictoireDesLoupsGarous
+    case _ => village
+
+extension (either: Village | FinDePartie)
+  def ou(f: Village => FinDePartie): FinDePartie =
+    either match
+      case fdp: FinDePartie => fdp
+      case v: Village     => f(v)
 
 def distributionDesRôles(participants: Participant*): Village = ???
 def loupsGarousAttaquent(village: Village): Village = ???
