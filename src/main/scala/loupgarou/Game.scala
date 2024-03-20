@@ -2,7 +2,9 @@ package loupgarou
 
 import Villageois.LoupGarou
 import Villageois.Humain
-import loupgarou.syntax.|>
+import loupgarou.syntax.{log, |>}
+
+import scala.util.Random
 
 case class Participant(nom: String)
 
@@ -11,8 +13,15 @@ enum Villageois:
   case LoupGarou(participant: Participant)
 
 case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou], maire: Option[Villageois] = None):
-  def retirerVillageois(villageois: Villageois): Village = ???
-  def setMaire(maire: Villageois): Village = ???
+  def retirerVillageois(villageois: Villageois): Village =
+    (villageois match
+      case humain: Humain => copy(humains = humains - humain)
+      case loupGarou: LoupGarou => copy(loupsGarous = loupsGarous - loupGarou)
+      ).copy(maire = maire.filter(_ != villageois))
+
+  def setMaire(maire: Villageois): Village = copy(maire = Some(maire))
+
+  override def toString: String = s"humains: ${humains.map(_.participant.nom).mkString(", ")} / loupsGarous ${loupsGarous.map(_.participant.nom).mkString(", ")} / maire $maire"
 
 enum FinDePartie:
   case VictoireDesLoupsGarous
@@ -29,7 +38,9 @@ def partie()(using interaction: Interaction) : FinDePartie =
 
 def nuit(village: Village)(using interaction: Interaction): FinDePartie =
   village
+    |> log("la nuit tombe")
     |> loupsGarousAttaquent
+    |> log("le jour se lève")
     |> leJourSeLève
 
 def leJourSeLève(village: Village, victime: Victime)(using interaction: Interaction): FinDePartie =
@@ -75,3 +86,26 @@ def jour(victime: Victime)(village: Village)(using interaction: Interaction): Fi
   village
     |> déroulementDuJour
     |> laPartieEstFinie ou nuit
+
+
+object ConsoleInteraction extends Interaction:
+
+  override def lesVillageoisChoisissentUneVictime(village: Village): Villageois =
+    Random.shuffle(village.humains ++ village.loupsGarous).head |> log("les villageois choisissent")
+
+  override def annoncerLaMortDeLaVictime(victime: Victime): Unit =
+    println(s"aujourd'hui ${victime.humain} est mort")
+
+  override def electionMaire(village: Village): Villageois =
+    Random.shuffle(village.humains ++ village.loupsGarous).head
+
+  override def lesLoupsGarousChoisissentUneVictime(village: Village): Villageois.Humain =
+    Random.shuffle(village.humains).head |> log("les loups garous choisissent")
+
+  override def distributionDesRôles(participants: Participant*): Village =
+    val (loupGarou, humains) = Random.shuffle(participants).splitAt(1)
+    Village(
+      loupsGarous = loupGarou.toSet.map(LoupGarou.apply),
+      humains = humains.toSet.map(Humain.apply))
+
+@main def play() = partie()(using ConsoleInteraction)

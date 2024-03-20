@@ -7,3 +7,8 @@ object syntax:
 
   def tireAuHasard[T](choses: Set[T]): T =
     Random.shuffle(choses).head
+      
+  def log[T](step: String)(t: T) =
+    println(s"$step $t")
+    t
+
