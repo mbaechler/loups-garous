@@ -94,3 +94,21 @@ ul {
 table { border-collapse: collapse; display: inline-block; }
 th, td { padding: 10px; border: 1px solid black; }
 tr:nth-child(even) {background-color: #f2f2f2;}
+
+.diff-add .remark-code-span-highlighted {
+    background-color: #acf2bd;
+}
+
+.diff-add .remark-code-line-highlighted {
+    background-color: #e6ffed;
+    position: relative;
+}
+
+.diff-rm .remark-code-span-highlighted {
+    background-color: #fdb8c0;
+}
+
+.diff-rm .remark-code-line-highlighted {
+    background-color: #ffeef0;
+    position: relative;
+}

@@ -45,17 +45,16 @@ Matthieu Baechler • `matthieu@baechler-craftsmanship.fr`
 
 ---
 
-```scala mdoc:invisible:reset
-import Villageois.*
-```
 
-```scala mdoc
+.diff-add[
+```scala
 enum Villageois:
   case Humain()
-  case LoupGarou()
+*&#x200B;  case LoupGarou()
 
 case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 ```
+]
 ---
 
 ```scala mdoc:invisible:reset
