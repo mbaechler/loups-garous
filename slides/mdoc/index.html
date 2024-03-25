@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Le Loup Garou avec la programmation fonctionnelle</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+<br>
+<br>
+
+
+# Le Loup Garou avec la programmation fonctionnelle
+Jonathan Laurent • `xxx`
+
+xxx
+
+Matthieu Baechler • `matthieu@baechler-craftsmanship.fr`
+
+@@matthieu@framapiaf.org • @m_baechler
+
+---
+# Matthieu Baechler, qui es-tu ?
+
+--
+- Software Crafter
+--
+
+- écrit principalement du Scala
+--
+
+- Récemment promu Full Stack Developer™
+--
+
+    - j'écris aussi du Elm
+--
+- Freelance
+---
+# De quoi parle-t-on ce soir ?
+
+
+---
+
+```scala mdoc:invisible:reset
+import Villageois.*
+```
+
+```scala mdoc
+enum Villageois:
+  case Humain()
+  case LoupGarou()
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+```
+---
+
+```scala mdoc:invisible:reset
+import Villageois.*
+```
+
+```scala mdoc
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+```
+
+---
+
+```scala mdoc:invisible:reset
+import Villageois.*
+
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+```
+
+```scala mdoc
+
+enum FinDePartie:
+  case VictoireDesLoups
+  case VictoireDesHumains
+
+def partie() : FinDePartie = ???
+```
+
+---
+class: center, middle
+
+# Merci d'avoir écouté jusque là !
+Code et slides [mbaechler/loups-garous](https://github.com/mbaechler/loups-garous) on GitHub
+
+## Questions?
+
+
+</textarea>
+    <script src="remark-latest.min.js">
+    </script>
+    <script>
+        var slideshow = remark.create({
+            ratio: "16:9",
+            slideNumberFormat: '%current%',
+            highlightLines: true,
+            countIncrementalSlides: false
+        });
+    </script>
+  </body>
+</html>
