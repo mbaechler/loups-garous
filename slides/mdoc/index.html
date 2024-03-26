@@ -15,9 +15,9 @@ class: center, middle
 
 
 # Le Loup Garou avec la programmation fonctionnelle
-Jonathan Laurent • `xxx`
+Jonathan Laurent • `jonathan.laurent@ytreza.dev`
 
-xxx
+[Linkedin: jonathan-laurent](https://www.linkedin.com/in/jonathan-laurent/) @@johjo@mastodon.social
 
 Matthieu Baechler • `matthieu@baechler-craftsmanship.fr`
 
@@ -40,60 +40,1240 @@ Matthieu Baechler • `matthieu@baechler-craftsmanship.fr`
 --
 - Freelance
 ---
+
+# Et toi, Jonathan Laurent ?
+
+--
+- Software Crafter aussi
+
+--
+- je code en c#, python, rust, typescript, windev
+
+--
+- passionné de tests, d'archi hexagonale et de TDD
+
+--
+- Formateur sur ces sujets
+
+--
+- Freelance
+
+--
+    - disponible pour une prochaine mission
+---
+
+
 # De quoi parle-t-on ce soir ?
 
 
 ---
+# Commençons à jouer
+---
+```scala
+*&#x200B;enum Villageois:
+*&#x200B;  case Humain()
+*&#x200B;  case LoupGarou()
+```
+---
 
 
-.diff-add[
+
 ```scala
 enum Villageois:
   case Humain()
-*&#x200B;  case LoupGarou()
+  case LoupGarou()
 
-case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+*&#x200B;case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])  
 ```
-]
 ---
 
-```scala mdoc:invisible:reset
-import Villageois.*
-```
-
-```scala mdoc
-case class Participant(nom: String)
+```scala
+*&#x200B;case class Participant(nom: String)
 
 enum Villageois:
-  case Humain(participant: Participant)
-  case LoupGarou(participant: Participant)
+  case Humain()
+  case LoupGarou()
 
-case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]  
 ```
 
 ---
 
-```scala mdoc:invisible:reset
-import Villageois.*
-
+```scala
 case class Participant(nom: String)
-
+ 
 enum Villageois:
-  case Humain(participant: Participant)
-  case LoupGarou(participant: Participant)
-
+*&#x200B;  case Humain(participant: Participant)
+*&#x200B;  case LoupGarou(participant: Participant)
+ 
 case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 ```
 
-```scala mdoc
+---
 
+```scala
+case class Participant(nom: String)
+ 
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+ 
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+ 
+*&#x200B;enum FinDePartie:
+*&#x200B;  case VictoireDesLoupsGarous
+*&#x200B;  case VictoireDesHumains
+ ```
+
+---
+
+```scala
+case class Participant(nom: String)
+ 
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+ 
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+ 
 enum FinDePartie:
-  case VictoireDesLoups
+  case VictoireDesLoupsGarous
   case VictoireDesHumains
 
-def partie() : FinDePartie = ???
+*&#x200B;def partie() : FinDePartie = ???
+ ```
+
+---
+
+```scala
+case class Participant(nom: String)
+ 
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+ 
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+ 
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains
+ 
+*&#x200B;def partie() : FinDePartie =
+*&#x200B;  distributionDesRôles(
+*&#x200B;    Participant("bob"),
+*&#x200B;    Participant("alice"),
+*&#x200B;    Participant("sacha"),
+*&#x200B;    Participant("sarah"),
+*&#x200B;    Participant("karim")
+*&#x200B;  ) |> nuit
 ```
 
+
+---
+
+```scala
+case class Participant(nom: String)
+ 
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+ 
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+ 
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains
+ 
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+
+*&#x200B;def distributionDesRôles(participants: Participant*): Village = ???
+```
+---
+
+```scala
+case class Participant(nom: String)
+ 
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+ 
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+ 
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains
+ 
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+ 
+def distributionDesRôles(participants: Participant*): Village = ???
+*&#x200B;def nuit(village: Village) : FinDePartie = ???
+```
+
+---
+
+```scala
+case class Participant(nom: String)
+ 
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+ 
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+ 
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains
+ 
+def partie() : FinDePartie =
+*&#x200B;   var village = distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+*&#x200B;  )
+*&#x200B;  var finDePartie: Option[FinDePartie] = None
+*&#x200B;  while (finDePartie == None) do
+*&#x200B;    val aprèsLaNuit = nuit(village)
+*&#x200B;    aprèsLaNuit match
+*&#x200B;      case f: FinDePartie => finDePartie = Some(f)
+*&#x200B;      case v: Village => village = v
+*&#x200B;  finDePartie.get
+
+def distributionDesRôles(participants: Participant*): Village = ???
+*&#x200B;def nuit(village: Village): FinDePartie | Village = ???
+ 
+```
+
+---
+
+```scala
+case class Participant(nom: String)
+ 
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+ 
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+ 
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains
+ 
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+ 
+def distributionDesRôles(participants: Participant*): Village = ???
+def nuit(village: Village) : FinDePartie = ???
+```
+
+---
+
+```scala
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains 
+
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+ 
+def distributionDesRôles(participants: Participant*): Village = ???
+def nuit(village: Village) : FinDePartie = ???
+*&#x200B;def loupsGarousAttaquent(village: Village): Village = ???
+```
+---
+
+```scala
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains 
+
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+ 
+def distributionDesRôles(participants: Participant*): Village = ???
+def nuit(village: Village) : FinDePartie = ???
+def loupsGarousAttaquent(village: Village): Village = ???
+*&#x200B;def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains 
+
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+ 
+def distributionDesRôles(participants: Participant*): Village = ???
+*&#x200B;def nuit(village: Village) : FinDePartie =
+*&#x200B;  village
+*&#x200B;    |> loupsGarousAttaquent
+*&#x200B;    |> jour
+ 
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village): FinDePartie = ???
+```
+---
+# C'est la nuit
+## Les loups-garous attaquent !!
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> jour
+ 
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+*&#x200B;    |> leJourSeLève
+
+*&#x200B;def leJourSeLève(village: Village) : FinDePartie =
+*&#x200B;  jour
+
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+*&#x200B;  laPartieEstFinie(village) ou jour
+
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village): FinDePartie = ???
+```
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+*&#x200B;def laPartieEstFinie(village: Village): Village | FinDePartie =
+*&#x200B;  village match
+*&#x200B;    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+*&#x200B;    case _ => village
+
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+    case _ => village
+
+*&#x200B;extension (either: Village | FinDePartie)
+*&#x200B;  def ou(f: Village => FinDePartie): FinDePartie =
+*&#x200B;    either match
+*&#x200B;      case fdp: FinDePartie => fdp
+*&#x200B;      case v: Village     => f(v)
+*&#x200B;    |> jour
+
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+    case _ => village
+
+[...]
+
+def loupsGarousAttaquent(village: Village): Village = ???
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+    case _ => village
+
+[...]
+
+*&#x200B;def loupsGarousAttaquent(village: Village): Village =
+*&#x200B;  val victime: Humain = ???
+*&#x200B;  village.retirerVillageois(victime)
+
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+
+```scala
+*&#x200B;case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+*&#x200B;  def retirerVillageois(villageois: Villageois): Village = ???
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+    case _ => village
+
+[...]
+
+def loupsGarousAttaquent(village: Village): Village =
+  val victime: Humain = ???
+  village.retirerVillageois(victime)
+
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+    case _ => village
+
+[...]
+
+def loupsGarousAttaquent(village: Village): Village =
+*&#x200B;  import village.*
+*&#x200B;  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+
+[...]
+ 
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+    case _ => village
+
+[...]
+
+*&#x200B;def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+
+[...]
+ 
+*&#x200B;def nuit(village: Village)(using interaction: Interaction) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarousGarous
+    case _ => village
+
+[...]
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def jour(village: Village): FinDePartie = ???
+```
+---
+# Début des interactions
+## Les joueurs doivent jouer
+---
+
+```scala
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+
+```
+---
+```scala
+*&#x200B;def partie()(using interaction: Interaction) : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+
+```
+
+---
+```scala
+def partie()(using interaction: Interaction) : FinDePartie =
+*&#x200B;  interaction.distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+
+```
+
+---
+```scala
+*&#x200B;trait Interaction:
+*&#x200B;  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+*&#x200B;  def distributionDesRôles(participants: Participant*): Village
+ 
+def partie()(using interaction: Interaction) : FinDePartie =
+  interaction.distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+
+```
+---
+# Le jour se lève
+## On annonce la victime
+---
+
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+def jour(village: Village): FinDePartie = ???
+```
+
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+  
+def leJourSeLève(village: Village) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+
+*&#x200B;def jour(village: Village)(using interaction: Interaction): FinDePartie =
+*&#x200B;  village
+*&#x200B;    |> déroulementDuJour
+*&#x200B;    |> laPartieEstFinie ou nuit
+```
+
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+*&#x200B;def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+  
+def jour(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+```
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+  
+def jour(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+
+*&#x200B;def déroulementDuJour(village: Village): Village = ???    
+```
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+  
+def jour(village: Village)(using interaction: Interaction): FinDePartie =
+*&#x200B;  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+    
+def déroulementDuJour(village: Village): Village = ???    
+```
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+*&#x200B;  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+  
+def jour(village: Village)(using interaction: Interaction): FinDePartie =
+  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+    
+def déroulementDuJour(village: Village): Village = ???    
+```
+
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+*&#x200B;case class Victime(humain: Humain)
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+  
+def jour(village: Village)(using interaction: Interaction): FinDePartie =
+  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+    
+def déroulementDuJour(village: Village): Village = ???    
+def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+```
+
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+case class Victime(humain: Humain)
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+  laPartieEstFinie(village) ou jour
+  
+*&#x200B;def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
+  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+    
+def déroulementDuJour(village: Village): Village = ???    
+def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+```
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+case class Victime(humain: Humain)
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+*&#x200B;  laPartieEstFinie(village) ou jour(victime)
+
+def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
+  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+    
+def déroulementDuJour(village: Village): Village = ???    
+def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+```
+
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+case class Victime(humain: Humain)
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  village.retirerVillageois(victime)
+
+*&#x200B;def leJourSeLève(village: Village, victime: Victime)(using interaction: Interaction): FinDePartie =
+  laPartieEstFinie(village) ou jour(victime)
+
+def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
+  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+    
+def déroulementDuJour(village: Village): Village = ???    
+def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+```
+
+---
+
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+case class Victime(humain: Humain)
+
+*&#x200B;def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Village, Victime) =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+*&#x200B;  (village.retirerVillageois(victime), Victime(victime))
+
+def leJourSeLève(village: Village, victime: Victime)(using interaction: Interaction): FinDePartie =
+  laPartieEstFinie(village) ou jour(victime)
+
+def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
+  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+    
+def déroulementDuJour(village: Village): Village = ???    
+def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+```
+---
+# Le jour se lève
+## On élit le maire
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+    
+def déroulementDuJour(village: Village): Village = ???    
+```
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+    
+*&#x200B;def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+*&#x200B;  val maire = interaction.voterPourLeMaire(village)
+*&#x200B;  village
+```
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+*&#x200B;  def voterPourLeMaire(village: Village): Villageois    
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = interaction.voterPourLeMaire(village)
+  village
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = interaction.voterPourLeMaire(village)
+*&#x200B;  village.élireMaire(maire)  
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+*&#x200B;  def élireMaire(maire: Villageois): Village = ???
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = interaction.voterPourLeMaire(village)
+  village.élireMaire(maire)  
+```
+
+---
+
+```scala
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
+  def retirerVillageois(villageois: Villageois): Village = ???
+  def élireMaire(maire: Villageois): Village = ???
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+*&#x200B;  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  village.élireMaire(maire)  
+```
+---
+# Le jour se lève
+## Les villageois se rebellent
+
+---
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+
+ def laPartieEstFinie(village: Village): Village | FinDePartie =
+   village match
+     case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+     case _ => village
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  village.élireMaire(maire)  
+```
+
+---
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+
+ def laPartieEstFinie(village: Village): Village | FinDePartie =
+   village match
+     case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+     case _ => village
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+*&#x200B;  val villageAvecUnMaire = village.élireMaire(maire)  
+*&#x200B;  villageAvecUnMaire
+```
+
+---
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+
+ def laPartieEstFinie(village: Village): Village | FinDePartie =
+   village match
+     case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+     case _ => village
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  val villageAvecUnMaire = village.élireMaire(maire)  
+*&#x200B;  val coupable = interaction.lesVillageoisChoisissentUnCoupable(villageAvecUnMaire)
+  villageAvecUnMaire
+```
+---
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+*&#x200B;  def lesVillageoisChoisissentUnCoupable(village: Village): Villageois  
+
+ def laPartieEstFinie(village: Village): Village | FinDePartie =
+   village match
+     case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+     case _ => village
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  val villageAvecUnMaire = village.élireMaire(maire)  
+  val coupable = interaction.lesVillageoisChoisissentUnCoupable(villageAvecUnMaire)
+  villageAvecUnMaire
+```
+---
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+  def lesVillageoisChoisissentUnCoupable(village: Village): Villageois  
+
+ def laPartieEstFinie(village: Village): Village | FinDePartie =
+   village match
+     case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+     case _ => village
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  val villageAvecUnMaire = village.élireMaire(maire)  
+  val coupable = interaction.lesVillageoisChoisissentUnCoupable(villageAvecUnMaire)
+*&#x200B;  villageAvecUnMaire.retirerVillageois(coupable)
+```
+
+---
+```scala
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
+  def annoncerLaMortDeLaVictime(victime: Victime): Unit
+  def voterPourLeMaire(village: Village): Villageois    
+  def lesVillageoisChoisissentUnCoupable(village: Village): Villageois  
+
+ def laPartieEstFinie(village: Village): Village | FinDePartie =
+   village match
+     case v: Village if v.humains.isEmpty => FinDePartie.VictoireDesLoupsGarous
+*&#x200B;     case v: Village if v.loupsGarous.isEmpty => FinDePartie.VictoireDesHumains
+     case _ => village
+
+def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
+  val maire = village.maire.getOrElse(interaction.electionMaire(village))
+  val villageAvecUnMaire = village.élireMaire(maire)  
+  val coupable = interaction.lesVillageoisChoisissentUnCoupable(villageAvecUnMaire)
+  villageAvecUnMaire.retirerVillageois(coupable)
+```
 ---
 class: center, middle
 

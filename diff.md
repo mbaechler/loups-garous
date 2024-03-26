@@ -1,12 +1,12 @@
- ```diff initial
+```diff initial
 + enum Villageois:
 +   case Humain()
 +   case LoupGarou()
 + 
 + case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
- ```
+```
  
- ```diff 1->2
+```diff 1->2
 + case class Participant(nom: String)
  enum Villageois:
 -   case Humain()
@@ -16,9 +16,9 @@
  
 - case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
 + case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
- ```
+```
  
- ```diff 2->3
+```diff 2->3
  case class Participant(nom: String)
  
  enum Villageois:
@@ -32,9 +32,9 @@
 +   case VictoireDesHumains
 + 
 + def partie() : FinDePartie = ???
- ```
+```
  
- ```diff 3->4
+```diff 3->4
  case class Participant(nom: String)
  
  enum Villageois:
@@ -59,9 +59,9 @@
 + 
 + def nuit(village: Village) : FinDePartie = ???
 + def distributionDesRôles(participants: Participant*): Village = ???
- ```
+```
  
- ```diff 4->5
+```diff 4->5
  case class Participant(nom: String)
  
  enum Villageois:
@@ -96,9 +96,9 @@
 + def nuit(village: Village): FinDePartie | Village = ???
  def distributionDesRôles(participants: Participant*): Village = ???
  
- ```
+```
  
- ```diff 4->6
+```diff 4->6
  case class Participant(nom: String)
  
  enum Villageois:
@@ -130,9 +130,9 @@
 + def loupsGarousAttaquent(village: Village): Village = ???
 + def jour(village: Village): FinDePartie = ???
  
- ```
+```
  
- ```diff 6->7
+```diff 6->7
  case class Participant(nom: String)
  
  enum Villageois:
@@ -177,9 +177,9 @@
  def distributionDesRôles(participants: Participant*): Village = ???
  def loupsGarousAttaquent(village: Village): Village = ???
  def jour(village: Village): FinDePartie = ???
- ```
+```
  
- ```diff 7->8
+```diff 7->8
  case class Participant(nom: String)
  
  enum Villageois:
@@ -229,9 +229,9 @@
 +   village.retirerVillageois(victime)
  
  def jour(village: Village): FinDePartie = ???
- ```
+```
  
- ```diff 8->9
+```diff 8->9
  case class Participant(nom: String)
  
  enum Villageois:
@@ -286,14 +286,14 @@
 -   val victime: Humain = ???
 + def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
 +   import village.*
-+   val victime: Humain = interaction.choixVictime(village)
++   val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
    village.retirerVillageois(victime)
  
  def jour(village: Village): FinDePartie = ???
- ```
+```
  
  
- ```diff 9->10
+```diff 9->10
  case class Participant(nom: String)
  
  enum Villageois:
@@ -343,7 +343,7 @@
  
  def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
    import village.*
-   val victime: Humain = interaction.choixVictime(village)
+   val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
    village.retirerVillageois(victime)
  
 + def déroulementDuJour(village: Village): Village = ???
@@ -353,13 +353,13 @@
 +   village
 +     |> déroulementDuJour
 +     |> laPartieEstFinie ou nuit
- ```
+```
  
  
  
  
  
- ```diff 10->11
+```diff 10->11
  case class Participant(nom: String)
  
  enum Villageois:
@@ -414,7 +414,7 @@
 - def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
 + def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Village, Victime) =
    import village.*
-   val victime: Humain = interaction.choixVictime(village)
+   val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
 +   val villageÀJour = village.retirerVillageois(victime)
 +   (villageÀJour, Victime(victime))
 -   village.retirerVillageois(victime)
@@ -429,78 +429,85 @@
    village
      |> déroulementDuJour
      |> laPartieEstFinie ou nuit
-     ```
+    ```
  
- ```diff 11->12
- case class Participant(nom: String)
+```diff 11->12
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+-case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
++case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou], maire: Option[Villageois] = None):
+  def retirerVillageois(villageois: Villageois): Village = ???
++  def setMaire(maire: Villageois): Village = ???
+
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains
+
+def partie()(using interaction: Interaction) : FinDePartie =
+  interaction.distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+
+def nuit(village: Village)(using interaction: Interaction): FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> leJourSeLève
+
+def leJourSeLève(village: Village, victime: Victime)(using interaction: Interaction): FinDePartie =
+  laPartieEstFinie(village) ou jour(victime)
+
+def laPartieEstFinie(village: Village): Village | FinDePartie =
+  village match
+    case v: Village if v.humains.isEmpty  => FinDePartie.VictoireDesLoupsGarous
+    case _ => village
+
+extension (either: Village | FinDePartie)
+  def ou(f: Village => FinDePartie): FinDePartie =
+    either match
+      case fdp: FinDePartie => fdp
+      case v: Village     => f(v)
+
+
+trait Interaction:
+  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
+  def distributionDesRôles(participants: Participant*): Village
++  def annoncerLaMortDeLaVictime(victime: Victime): Unit
++  def electionMaire(village: Village): Villageois
+
+case class Victime(humain: Humain)
+
+def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Village, Victime) =
+  import village.*
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
+  val villageÀJour = village.retirerVillageois(victime)
+  (villageÀJour, Victime(victime))
+
+-def déroulementDuJour(village: Village): Village = ???
++def déroulementDuJour(village: Village)(using interaction: Interaction): Village =
++  val maire = interaction.electionMaire(village)
++  village.setMaire(maire)
+
+-def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
+
+def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
+-  annoncerLaMortDeLaVictime(victime)
++  interaction.annoncerLaMortDeLaVictime(victime)
+  village
+    |> déroulementDuJour
+    |> laPartieEstFinie ou nuit
+```
  
- enum Villageois:
-   case Humain(participant: Participant)
-   case LoupGarou(participant: Participant)
- 
- case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou]):
-   def retirerVillageois(villageois: Villageois): Village = ???
- 
- enum FinDePartie:
-   case VictoireDesLoupsGarous
-   case VictoireDesHumains
- 
- def partie()(using interaction: Interaction) : FinDePartie =
-   interaction.distributionDesRôles(
-     Participant("bob"),
-     Participant("alice"),
-     Participant("sacha"),
-     Participant("sarah"),
-     Participant("karim")
-   ) |> nuit
- 
- def nuit(village: Village)(using interaction: Interaction): FinDePartie =
-   village
-     |> loupsGarousAttaquent
-     |> leJourSeLève
- 
- def leJourSeLève(village: Village, victime: Victime)(using interaction: Interaction): FinDePartie =
-   laPartieEstFinie(village) ou jour(victime)
- 
- def laPartieEstFinie(village: Village): Village | FinDePartie =
-   village match
-     case v: Village if v.humains.isEmpty  => FinDePartie.VictoireDesLoupsGarous
-     case _ => village
- 
- extension (either: Village | FinDePartie)
-   def ou(f: Village => FinDePartie): FinDePartie =
-     either match
-       case fdp: FinDePartie => fdp
-       case v: Village     => f(v)
  
  
- trait Interaction:
-   def choixVictime(village: Village): Humain
-   def distributionDesRôles(participants: Participant*): Village
- 
- 
- case class Victime(humain: Humain)
- 
- def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Village, Victime) =
-   import village.*
-   val victime: Humain = interaction.choixVictime(village)
-   val villageÀJour = village.retirerVillageois(victime)
-   (villageÀJour, Victime(victime))
- 
- def déroulementDuJour(village: Village): Village = ???
- 
- def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
- 
- def jour(victime: Victime)(village: Village)(using interaction: Interaction): FinDePartie =
-   annoncerLaMortDeLaVictime(victime)
-   village
-     |> déroulementDuJour
-     |> laPartieEstFinie ou nuit
- ```
- 
- 
- 
- ```diff 12->13
+```diff 12->13
  case class Participant(nom: String)
  
  enum Villageois:
@@ -568,9 +575,9 @@
    village
      |> déroulementDuJour
      |> laPartieEstFinie ou nuit
- ```
+```
  
- ```diff 13->14
+```diff 13->14
  case class Participant(nom: String)
  
  enum Villageois:
@@ -641,9 +648,9 @@
    village
      |> déroulementDuJour
      |> laPartieEstFinie ou nuit
- ```
+```
  
- ```diff 14->15
+```diff 14->15
  case class Participant(nom: String)
  
  enum Villageois:
@@ -716,7 +723,7 @@
    village
      |> déroulementDuJour
      |> laPartieEstFinie ou nuit
- ```
+```
 
 
 
@@ -997,7 +1004,7 @@ trait Interaction:
 
 def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
   import village.*
-  val victime: Humain = interaction.choixVictime(village)
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
   village.retirerVillageois(victime)
 
 def jour(village: Village): FinDePartie = ???
@@ -1055,7 +1062,7 @@ case class Victime(humain: Humain)
 
 def loupsGarousAttaquent(village: Village)(using interaction: Interaction): (Village, Victime) =
   import village.*
-  val victime: Humain = interaction.choixVictime(village)
+  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
   val villageÀJour = village.retirerVillageois(victime)
   (villageÀJour, Victime(victime))
 

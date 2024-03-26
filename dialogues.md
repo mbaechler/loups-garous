@@ -287,7 +287,7 @@ def jour(village: Village): FinDePartie = ???
 > J : C'est quoi ce `ou` que tu nous as mis ?
 
 > M : J'ai créé une "extension method" pour rendre le code plus facile à lire. Dans ce cas, étant donné une valeur
-> qui serait soit un Village soit une FinDePart, si c'est une fin de partie, je renvoie la valeur, mais si c'est
+> qui serait soit un Village soit une FinDePartie, si c'est une fin de partie, je renvoie la valeur, mais si c'est
 > un Village, j'appelle la fonction passée en paramètre en lui passant le village.
 
 > J : C'est ça le `|` ? C'est pour dire soit un type soit un autre ?
@@ -295,8 +295,6 @@ def jour(village: Village): FinDePartie = ???
 > M : Oui, c'est une disjonction ou aussi appelé type union. Ça permet de symboliser des branches de code.
 > Ici, c'est `laPartieEstFinie` qui décide comme le code branche en fonction de s'il reste des humains dans le village
 > ou non.
-
-// TODO : Dans le code au-dessus, tu as deux fois la fonction nuit et deux fois la fonction distributionDesRôles
 
 > J : OK. On a le lever du jour, mais je te propose de continuer sur l'attaque des loups-garous. Lorsqu'ils attaquent, les loups-garous doivent désigner une victime et ils la mettent à mort.
 
