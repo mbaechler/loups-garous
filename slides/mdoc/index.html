@@ -341,22 +341,6 @@ def distributionDesRôles(participants: Participant*): Village = ???
 > Et on est venu quand même. On enchaine donc sur la fonction `nuit` ?
 
 > M : Effectivement, je te propose d'ignorer la distribution des rôles pour le moment, et de nous concentrer sur la nuit.
-> Que se passe-t-il durant cette phase de jeu ?
-
-> J : Et bien, les loups-garous se réveillent et décident de tuer quelqu'un. Puis il y a certains pouvoirs qui
-> s'activent la nuit, comme la sorcière. Et après, le jour se lève.
-
-> M : OK. On va essayer d'ignorer les pouvoirs dans un premier temps et d'avancer sur les phases de jeu. Il se passe
-> quoi lorsque le jour se lève ?
-
-> J : Lorsque le jour se lève, on annonce aux joueurs qui est mort et on entame la phase de jeu correspondant au jour.
-
-> M : OK, on verra le jour après. Tu as parlé de victime, cela se produit lors de l'attaque des loups-garous ?
-
-> J : Oui, c'est ça. Les loups-garous choisissent un participant. Il est tué. Lorsque le jour se lève, on annonce
-> à ce participant qu'il est éliminé.
-
-> M : que penses-tu de ça ?
 
 ---
 
@@ -385,6 +369,23 @@ def partie() : FinDePartie =
 def distributionDesRôles(participants: Participant*): Village = ???
 def nuit(village: Village) : FinDePartie = ???
 ```
+???
+> M : Et nous voilà à l'étape précédente.
+> Que se passe-t-il durant cette phase de jeu ?
+
+> J : Et bien, les loups-garous se réveillent et décident de tuer quelqu'un. Puis il y a certains pouvoirs qui
+> s'activent la nuit, comme la sorcière. Et après, le jour se lève.
+
+> M : OK. On va essayer d'ignorer les pouvoirs dans un premier temps et d'avancer sur les phases de jeu. Il se passe
+> quoi lorsque le jour se lève ?
+
+> J : Lorsque le jour se lève, on annonce aux joueurs qui est mort et on entame la phase de jeu correspondant au jour.
+
+> M : OK, on verra le jour après. Tu as parlé de victime, cela se produit lors de l'attaque des loups-garous ?
+
+> J : Oui, c'est ça. Les loups-garous choisissent un participant et l'éliminent.
+
+> M : que penses-tu de ça ?
 
 ---
 
@@ -411,10 +412,81 @@ def partie() : FinDePartie =
   ) |> nuit
  
 def distributionDesRôles(participants: Participant*): Village = ???
-def nuit(village: Village) : FinDePartie = ???
+
+*&#x200B;def nuit(village: Village) : FinDePartie =
+*&#x200B;  village
+*&#x200B;    |> loupsGarousAttaquent
+*&#x200B;    |> jour
+```
+
+---
+
+```scala
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains 
+
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+ 
+def distributionDesRôles(participants: Participant*): Village = ???
+
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> jour
+
 *&#x200B;def loupsGarousAttaquent(village: Village): Village = ???
 ```
 
+---
+
+```scala
+case class Participant(nom: String)
+
+enum Villageois:
+  case Humain(participant: Participant)
+  case LoupGarou(participant: Participant)
+
+case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
+
+enum FinDePartie:
+  case VictoireDesLoupsGarous
+  case VictoireDesHumains 
+
+def partie() : FinDePartie =
+  distributionDesRôles(
+    Participant("bob"),
+    Participant("alice"),
+    Participant("sacha"),
+    Participant("sarah"),
+    Participant("karim")
+  ) |> nuit
+ 
+def distributionDesRôles(participants: Participant*): Village = ???
+
+def nuit(village: Village) : FinDePartie =
+  village
+    |> loupsGarousAttaquent
+    |> jour
+ 
+def loupsGarousAttaquent(village: Village): Village = ???
+*&#x200B;def jour(village: Village): FinDePartie = ???
+```
 
 ???
 
@@ -439,69 +511,6 @@ def nuit(village: Village) : FinDePartie = ???
 
 > J : Je ne suis pas encore convaincu. Mais continuons.
 
----
-
-```scala
-case class Participant(nom: String)
-
-enum Villageois:
-  case Humain(participant: Participant)
-  case LoupGarou(participant: Participant)
-
-case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
-
-enum FinDePartie:
-  case VictoireDesLoupsGarous
-  case VictoireDesHumains 
-
-def partie() : FinDePartie =
-  distributionDesRôles(
-    Participant("bob"),
-    Participant("alice"),
-    Participant("sacha"),
-    Participant("sarah"),
-    Participant("karim")
-  ) |> nuit
- 
-def distributionDesRôles(participants: Participant*): Village = ???
-def nuit(village: Village) : FinDePartie = ???
-def loupsGarousAttaquent(village: Village): Village = ???
-*&#x200B;def jour(village: Village): FinDePartie = ???
-```
-
----
-
-```scala
-case class Participant(nom: String)
-
-enum Villageois:
-  case Humain(participant: Participant)
-  case LoupGarou(participant: Participant)
-
-case class Village(humains: Set[Humain], loupsGarous: Set[LoupGarou])
-
-enum FinDePartie:
-  case VictoireDesLoupsGarous
-  case VictoireDesHumains 
-
-def partie() : FinDePartie =
-  distributionDesRôles(
-    Participant("bob"),
-    Participant("alice"),
-    Participant("sacha"),
-    Participant("sarah"),
-    Participant("karim")
-  ) |> nuit
- 
-def distributionDesRôles(participants: Participant*): Village = ???
-*&#x200B;def nuit(village: Village) : FinDePartie =
-*&#x200B;  village
-*&#x200B;    |> loupsGarousAttaquent
-*&#x200B;    |> jour
- 
-def loupsGarousAttaquent(village: Village): Village = ???
-def jour(village: Village): FinDePartie = ???
-```
 
 ---
 # C'est la nuit
@@ -533,7 +542,7 @@ def jour(village: Village): FinDePartie = ???
 
 > J : Tout à fait
 
-> M : Je vais ajouter le lever du jour
+> M : Je vais ajouter le lever du jour avec un petit *extract method* et ensuite, on vérifiera la fin de partie.
 
 
 ---
@@ -640,7 +649,7 @@ def jour(village: Village): FinDePartie = ???
 > J : C'est ça le `|` ? C'est pour dire soit un type soit un autre ?
 
 > M : Oui, c'est une disjonction ou aussi appelé type union. Ça permet de symboliser des branches de code.
-> Ici, c'est `laPartieEstFinie` qui décide comme le code branche en fonction de s'il reste des humains dans le village
+> Ici, c'est `laPartieEstFinie` qui décide comment le code branche en fonction de s'il reste des humains dans le village
 > ou non.
 
 > J : OK. On a le lever du jour, mais je te propose de continuer sur l'attaque des loups-garous. Lorsqu'ils attaquent, les loups-garous doivent désigner une victime et ils la mettent à mort.
@@ -1034,7 +1043,7 @@ def jour(village: Village)(using interaction: Interaction): FinDePartie =
 
 > J : Oui, ça me semble un bon point de départ. Je te propose d'annoncer aux joueurs qui est mort durant la nuit.
 
-> M : Pour faire ça, il faudrait qu'on passe l'information de la phase nuit à la phase jour.
+> M : Pour faire ça, il faudrait qu'on passe cette information de la phase nuit à la phase jour.
 
 
 ---
@@ -1170,7 +1179,9 @@ def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
 > Du coup, pour changer le minimum de choses, je peux dire que ma fonction prend deux ensembles de paramètres.
 > Ainsi, une fois que j'ai passé victime, j'ai bien une fonction qui prend un `Village`.
 
-> J: OK.
+> J: OK. La programmation fonctionnelle, c'est vraiment différent de ce que je connaissais
+
+> M: Et tu as encore beaucoup de choses à découvrir ! En attenant, je vais faire remonter la victime partout où l'on en a besoin.
 ---
 
 ```scala
@@ -1269,15 +1280,13 @@ def jour(victime: Victime)(village: Village)(using interaction: Interaction): Fi
 def déroulementDuJour(village: Village): Village = ???    
 def annoncerLaMortDeLaVictime(victime: Victime): Unit = ???
 ```
-
-???
-
-
-> J: Maintenant, on va pouvoir élire le maire.
-
 ---
 # Le jour se lève
 ## On élit le maire
+
+???
+
+> J: Maintenant, on va pouvoir élire le maire.
 
 ---
 
@@ -1307,6 +1316,7 @@ trait Interaction:
 *&#x200B;  val maire = interaction.voterPourLeMaire(village)
 *&#x200B;  village
 ```
+
 ---
 
 ```scala
@@ -1376,9 +1386,26 @@ def déroulementDuJour(village: Village)(using interaction: Interaction): Villag
 *&#x200B;  val maire = village.maire.getOrElse(interaction.electionMaire(village))
   village.élireMaire(maire)  
 ```
+
+???
+
+> J: Je commence à comprendre. On passe par une nouvelle interaction pour que les joueurs puissent choisir le maire
+
+> M: Effectivement !
+
+> J: Et le `getOrElse` ? 
+
+> M: Cela permet de récupérer le maire déjà en place ou d'en élire un nouveau si ce n'est pas le cas.
+
 ---
 # Le jour se lève
 ## Les villageois se rebellent
+
+???
+
+> J: Bien, maintenant, les villageois vont pouvoir agir à leur tour et essayer d'éliminer les loups-garous. On va donc ajouter une nouvelle interaction pour désigner le coupable ?
+
+> M: Effectivement. On va ajouter cette interaction, éliminer le supposé coupable et vérifier les conditions de victoire.
 
 ---
 ```scala
@@ -1498,6 +1525,17 @@ def déroulementDuJour(village: Village)(using interaction: Interaction): Villag
   val coupable = interaction.lesVillageoisChoisissentUnCoupable(villageAvecUnMaire)
   villageAvecUnMaire.retirerVillageois(coupable)
 ```
+---
+# Game over
+
+???
+
+> M: Et voilà, ton jeu est prêt. Il reste à implémenter des choses comme les interactions mais les règles sont en place.
+
+> J: Génial, j'ai hâte de pouvoir jouer ! Mais... Il n'y a pas de pouvoir !!!
+
+> M: Ah ! Ça... ça sera pour la prochaine fois !
+
 ---
 class: center, middle
 
