@@ -978,12 +978,11 @@ def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Vill
 def leJourSeLève(village: Village) : FinDePartie =
   laPartieEstFinie(village) ou jour
 
-*&#x200B;def jour(village: Village)(using interaction: Interaction): FinDePartie =
+*&#x200B;def jour(village: Village): FinDePartie =
 *&#x200B;  village
 *&#x200B;    |> déroulementDuJour
 *&#x200B;    |> laPartieEstFinie ou nuit
 ```
-
 ---
 
 ```scala
@@ -1001,35 +1000,10 @@ def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Vill
   val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
   village.retirerVillageois(victime)
 
-*&#x200B;def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+def leJourSeLève(village: Village) : FinDePartie =
   laPartieEstFinie(village) ou jour
   
-def jour(village: Village)(using interaction: Interaction): FinDePartie =
-  village
-    |> déroulementDuJour
-    |> laPartieEstFinie ou nuit
-```
----
-
-```scala
-trait Interaction:
-  def lesLoupsGarousChoisissentUneVictime(village: Village): Humain
-  def distributionDesRôles(participants: Participant*): Village
-
-def nuit(village: Village)(using interaction: Interaction): FinDePartie =
-  village
-    |> loupsGarousAttaquent
-    |> leJourSeLève
-
-def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Village =
-  import village.*
-  val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
-  village.retirerVillageois(victime)
-
-def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
-  laPartieEstFinie(village) ou jour
-  
-def jour(village: Village)(using interaction: Interaction): FinDePartie =
+def jour(village: Village): FinDePartie =
   village
     |> déroulementDuJour
     |> laPartieEstFinie ou nuit
@@ -1063,10 +1037,10 @@ def loupsGarousAttaquent(village: Village)(using interaction: Interaction): Vill
   val victime: Humain = interaction.lesLoupsGarousChoisissentUneVictime(village)
   village.retirerVillageois(victime)
 
-def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
+*&#x200B;def leJourSeLève(village: Village)(using interaction: Interaction) : FinDePartie =
   laPartieEstFinie(village) ou jour
   
-def jour(village: Village)(using interaction: Interaction): FinDePartie =
+*&#x200B;def jour(village: Village)(using interaction: Interaction): FinDePartie =
 *&#x200B;  interaction.annoncerLaMortDeLaVictime(victime)
   village
     |> déroulementDuJour
